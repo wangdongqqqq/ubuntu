@@ -1,0 +1,35 @@
+*******************************************************************************************
+*********************基于 ubuntu 16.04 LTS 配置supervisor的简明教程************************
+*******************************************************************************************
+【使用supervisor守护进程】
+为了使ss等基本或必需服务自动保持运行状态，建议使用supervisor守护和管理进程，
+安装及使用方法如下:
+   1.安装supervisor,请确保已安装python:
+      apt-get install supervisor;
+   2.配置：
+   **本教程中的配置方法较繁琐，但通过本人实际使用体验来看，
+   **以下方法最为清晰和易于管理使用,
+   **请知悉:
+      1)配置文件:
+        vi /etc/supervisor/supervisord.conf;
+      2)移动到文件结尾，添加:
+        [include]
+	files = /etc/supervisor/conf.d/*.conf
+      3)新建文件，以ss举例:
+        A>vi /etc/supervisor/conf.d/shadowsocks.conf;
+        B>添加：
+          [program:shadowsocks] //进程名，可自定义
+          command=ssserver -c /etc/shadowsocks.json  //要执行的命令 
+          autostart=true
+          autorestart=true
+          user=root //用户
+          log_stderr=true
+          logfile=/var/log/shadowsocks.log
+      4)如需添加其他进程，重复步骤3)即可。
+
+   3.设置supervisor自启动(自行baidu或google)
+
+   4.查看supervisor状态:
+     service supervisor stop;
+     service supervisor restart;
+     service supervisor status;

@@ -1,0 +1,50 @@
+*******************************************************************************************
+*********************基于 ubuntu 16.04 LTS 搭建ftp服务器的简明教程*************************
+*******************************************************************************************
+【基本教程】
+请遵循以下步骤安装并配置vsftpd:
+    1.安装VSFTPD并启动VSFTPD服务：
+        sudo apt-get install vsftpd;
+        service vsftpd start;
+    2.配置用户:
+        1) 新建目录
+            sudo mkdir /home/ftp;
+        2) 新建用户myftpserver，制定用户主目录和所用shell，并设置密码
+            sudo useradd -d /home/uftp -s /bin/bash myftpserver;
+        3) 然后将目录/home/ftp的所属者和所属组都改为myftpserver
+            sudo chown myftpserver:myftpserver /home/ftp;
+        4) 新建文件/etc/vsftpd.user_list，用于存放允许访问ftp的用户
+            sudo vi /etc/vsftpd.user_list;
+            在其中添加用户myftpserver,并且保存退出
+    3.配置VSFTPD:
+        1) 打开配置文件
+            sudo vi /etc/vsftpd.conf;
+        2) 修改配置
+            打开注释 write_enable=YES 
+　　        添加信息 userlist_file=/etc/vsftpd.user_list 
+　　        添加信息 userlist_enable=YES 
+　　        添加信息 userlist_deny=NO 
+            (添加信息至配置文件最下方即可)
+　　        修改完成后保存退出。
+    4.重启并查看服务:
+        service vsftpd restart;
+        service vsftpd status;
+
+【修改vsftpd默认端口】
+vsftpd的默认端口为21，如需修改请遵循以下步骤:
+    1.配置VSFTPD:
+        打开配置文件:sudo vi /etc/vsftpd.conf;
+        添加以下信息:
+          listen_port=911
+          pasv_min_port=2100
+          pasv_max_port=2200
+     (重启服务后生效)
+    2.修改系统配置:
+        1) 编辑/etc/services文件;
+        2) ftp 21/tcp  改为 ftp 911/tcp;
+        3) 重启vsftpd服务;
+        4) netstat -tnulp | grep vsftpd 查看系统监听;
+
+【故障排查及注意事项】
+**修改配置后，请确保服务器防火墙已允许所配置接口的外部访问权限；
+**可以在本地端使用ftp localhost命令确认ftp服务端已搭建成功，然后再检查外部连接问题；
