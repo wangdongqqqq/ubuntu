@@ -1,0 +1,28 @@
+1.查看ubuntu系统版本
+ uname -ar
+ 出现x86_64则为64位系统，出现i686则为32位系统。
+
+2.First, install or update to the latest system software.
+  sudo apt-get update
+  sudo apt-get install build-essential chrpath libssl-dev libxft-dev
+
+3.Install these packages needed by PhantomJS to work correctly.
+  sudo apt-get install libfreetype6 libfreetype6-dev
+  sudo apt-get install libfontconfig1 libfontconfig1-dev
+
+4.Get it from the PhantomJS website.
+
+  cd ~
+  export PHANTOM_JS="phantomjs-1.9.8-linux-x86_64"   此处为设置环境变量，若系统为32位，将x86_64替换为i686，1.9.8为软件的版本。
+  wget https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
+
+5.Once downloaded, move Phantomjs folder to /usr/local/share/ and create a symlink:
+  sudo mv $PHANTOM_JS.tar.bz2 /usr/local/share/
+  cd /usr/local/share/
+  sudo tar xvjf phantomjs-1.9.2-linux-x86_64.tar.bz2
+  sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/share/phantomjs
+  sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin/phantomjs
+  sudo ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/bin/phantomjs
+
+6.show version
+  phantomjs --version
